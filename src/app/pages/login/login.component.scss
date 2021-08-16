@@ -1,0 +1,18 @@
+
+.login-root{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  .login-from{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    justify-content: center;
+    align-items: center;
+    input{
+      margin: 5px
+    }
+  }
+}
+

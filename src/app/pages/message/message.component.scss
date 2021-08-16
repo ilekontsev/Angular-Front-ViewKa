@@ -1,0 +1,13 @@
+.message-root{
+  display: flex;
+  height: calc(100% - 50px);
+  .chat{
+    flex: 2;
+    height: auto;
+  }
+  .list{
+    background: #090C10;
+    width: 400px;
+    height: 100%;
+  }
+}
