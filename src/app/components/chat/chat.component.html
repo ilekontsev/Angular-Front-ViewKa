@@ -1,53 +1,78 @@
 <div class="chat-root">
-  <div class="chat-wrap" cdkDrag cdkDragBoundary=".chat-root">
-    <div class="chat-header" cdkDragHandle>
-      <div class="chat-header-img"></div>
-      <div class="chat-head">
-        <div class="chat-title"><a href="#">Ivan Lekontsev</a></div>
-        <div class="chat-sub_title">Online</div>
+  <div *ngFor="let item of isChatDisplayed() | async">
+    <div
+      class="chat-wrap"
+      *ngIf="item.display"
+      cdkDrag
+      cdkDragBoundary=".chat-root"
+    >
+      <div class="chat-header" cdkDragHandle>
+        <div class="chat-header-img">
+          <img class="header-img" src="{{ item.photo_50 }}" alt="avatar user" />
+        </div>
+        <div class="chat-head">
+          <div class="chat-title">
+            <a href="#">{{ item.first_name }} {{ item.last_name }}</a>
+          </div>
+          <div class="chat-sub_title">Online</div>
+        </div>
+        <button
+          class="chat-menu"
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>person_add</mat-icon>
+            <span>Add friend</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>person_remove</mat-icon>
+            <span>Delete friend</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>block</mat-icon>
+            <span>Add in ignore</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            <span>Settings the chat</span>
+          </button>
+          <button mat-menu-item (click)="closeChat(item.id)">
+            <mat-icon>close</mat-icon>
+            <span>Close</span>
+          </button>
+        </mat-menu>
       </div>
-      <button
-        class="chat-menu"
-        mat-icon-button
-        [matMenuTriggerFor]="menu"
-        aria-label="Example icon-button with a menu"
-      >
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>person_add</mat-icon>
-          <span>Add friend</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>person_remove</mat-icon>
-          <span>Delete friend</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>block</mat-icon>
-          <span>Add in ignore</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>settings</mat-icon>
-          <span>Settings the chat</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>close</mat-icon>
-          <span>Close</span>
-        </button>
-      </mat-menu>
-    </div>
-    <div class="chat-content">
-      <div>[21:10] Ivan Lekontsev: hello world, how are you?</div>
-    </div>
-    <div class="chat-action">
-      <div class="chat-footer">
-        <span class="material-icons"> attach_file </span>
+      <div class="chat-content" #chat>
+        <div
+          class="chat-message"
+          *ngFor="let message of messagesForChat() | async"
+        >
+          <span>[{{ message.date }}]</span>
+          <span>{{ message.list[0].first_name }} </span>
+          <span>{{ message.list[0].last_name }}:</span>
+          <span> {{ message.text }}</span>
+        </div>
+      </div>
+      <div class="chat-action">
+        <form class="chat-footer">
+          <span class="material-icons"> attach_file </span>
 
-        <input autoComplete="off" class="chat-input" />
-        <mat-icon matSuffix>mood</mat-icon>
+          <input autoComplete="off" [(ngModel)]="textChat" name="chatInput" class="chat-input" />
+          <mat-icon matSuffix (click)="handleClickEmoji()">mood</mat-icon>
 
-        <button mat-raised-button class="chat-button">Basic</button>
+          <button
+            mat-raised-button
+            class="chat-button"
+            (click)="sendMessage(item.id)"
+          >
+            Basic
+          </button>
+        </form>
       </div>
     </div>
   </div>

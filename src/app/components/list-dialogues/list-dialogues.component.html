@@ -1,11 +1,23 @@
 <div class="list-root">
   <div class="list-wrap">
     <div class="list-text">List of dialogues</div>
-    <div class="list-container">
-      <div class="list-container-img"></div>
+    <div
+      class="list-container"
+      (click)="getMessageDialog(item.id)"
+      *ngFor="let item of listDialogues"
+    >
+      <div class="list-container-img">
+        <img class="list-img" src="{{ item.photo_50 }}" alt="" />
+      </div>
       <div class="list-head">
-        <div class="list-title">Ivan Lekontsev</div>
-        <div class="list-sub_title">Online</div>
+        <div class="list-title">{{ item.first_name }} {{ item.last_name }}</div>
+        <div class="list-sub_title" *ngIf="item.online; else elseBlock">
+          Online
+        </div>
+        <ng-template class="list-sub_title" #elseBlock
+          >last online:
+          {{ item.last_seen.time * 1000 | date: "dd/MM/YY HH:mm" }}</ng-template
+        >
       </div>
     </div>
   </div>

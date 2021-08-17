@@ -34,4 +34,15 @@ export class MessageService {
       }
     );
   }
+
+  sendMessage(userId: number, text: string) {
+    const body = { userId, text };
+    return this.httpClient.post(
+      `${BASE_URL}${CONFIG.SEND_MESSAGE_USER}`,
+      body,
+      {
+        headers: { token: this.getToken() },
+      }
+    );
+  }
 }
